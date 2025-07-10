@@ -1,0 +1,19 @@
+# numpy
+pandas
+# pytorch==1.8.1
+matplotlib
+PyWavelets
+scipy
+rich
+pytorch-lightning==2.4
+scikit-learn
+tsfresh
+einops>=0.8.0
+beartype
+hyper-connections>=0.0.14
+pandas-stubs
+
+# pip install below
+akshare
+# may need to be re-installed
+pyqt

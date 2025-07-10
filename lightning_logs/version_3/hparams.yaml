@@ -1,0 +1,14 @@
+batch_size: 32
+cnn_out_channels: 32
+hidden_size: 1
+learning_rate: 0.0001
+momentum: null
+num_days_for_predict: 96
+num_days_to_predict: 1
+num_layers: 2
+num_workers: 8
+optimizer: !!python/name:torch.optim.adam.Adam ''
+out_var: 1
+target: Apple
+train_size: 0.8
+validation_size: 0.1

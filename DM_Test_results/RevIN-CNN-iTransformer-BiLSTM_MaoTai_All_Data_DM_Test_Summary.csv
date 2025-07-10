@@ -1,0 +1,7 @@
+Comparison Model,DM Statistic,p-value
+RevIN-CNN-Transformer-BiLSTM,-10.6597,0.0000
+CNN-BiLSTM-Attention,-19.3752,0.0000
+SCINet,-28.8593,0.0000
+GAN,-21.0837,0.0000
+Transformer,-43.3089,0.0000
+iTransformer,-13.7217,0.0000

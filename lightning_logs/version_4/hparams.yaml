@@ -1,0 +1,10 @@
+batch_size: 32
+learning_rate: 0.0001
+momentum: null
+num_days_for_predict: 96
+num_days_to_predict: 1
+num_workers: 8
+optimizer: !!python/name:torch.optim.adam.Adam ''
+target: Apple
+train_size: 0.8
+validation_size: 0.1
