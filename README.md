@@ -36,7 +36,7 @@ Follow these instructions to set up the project environment and reproduce our re
 
 ### Prerequisites
 
--   Python 3.10+
+-   Python 3.12
 -   Conda or venv for environment management
 -   An NVIDIA GPU with CUDA support is recommended for training.
 
@@ -46,8 +46,8 @@ Due to the project's reliance on specific GPU hardware acceleration (CUDA), the 
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/](https://github.com/)[Your GitHub Username/Repo].git
-    cd [Repo Name]
+    git clone [https://github.com/DyeDye-diyung/Framework_for_Financial_Time-Series_Forecasting.git](https://github.com/DyeDye-diyung/Framework_for_Financial_Time-Series_Forecasting.git)
+    cd Framework_for_Financial_Time-Series_Forecasting
     ```
 
 2.  **Create and activate a Conda environment:**
@@ -61,13 +61,13 @@ Due to the project's reliance on specific GPU hardware acceleration (CUDA), the 
     
 3.  **Install Core GPU and PyTorch Dependencies:**
 
-    This is the most critical step. Run the following command to install PyTorch along with the correct, compatible versions of the CUDA Toolkit and cuDNN from a recommended channel. Using a mirror (e.g., Tsinghua) can significantly speed up the download process in certain regions.
+    This is the most critical step for ensuring hardware acceleration works correctly. This project requires a specific build of PyTorch (v2.3.1) that is compatible with CUDA 11.8 and Python 3.12.
+
+    *Note: This specific version may only be available through particular Conda channels (in this case, the Tsinghua University mirror for PyTorch). Official channels may not host this exact build. Therefore, it is **essential** to use the following command which explicitly points to the correct channels to install PyTorch, the CUDA Toolkit, and cuDNN together. This ensures perfect compatibility between all core libraries.*
 
     ```bash
-    conda install pytorch=2.3.1 torchvision=0.18.1 torchaudio=2.3.1 pytorch-cuda=11.8 -c pytorch -c nvidia
+    conda install cudatoolkit=11.8.0 cudnn=8.8.0 pytorch=2.3.1=py3.12_cuda11.8_cudnn8_0 torchvision=0.18.1=py312_cu118 torchaudio=2.3.1=py312_cu118 pytorch-cuda=11.8 -c https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/win-64 -c nvidia
     ```
-    
-    *Note: The command provided in the paper uses a specific mirror for faster downloads (`-c https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/win-64`). You can use the official channels as shown above, or the mirror if you experience slow download speeds.*
 
 4. **Install Remaining Dependencies:**
 
@@ -101,7 +101,7 @@ Due to the project's reliance on specific GPU hardware acceleration (CUDA), the 
 
     This method involves downloading a complete, pre-built environment folder. It is faster but may be less portable across different operating systems.
 
-    1.  Download the compressed environment folder from: **[Link to Google Drive / Zenodo where you host the file]**. *(If the link is inaccessible, and you require this file, please contact the corresponding author of our paper via email.)*
+    1.  Download the compressed environment folder from: **[Google Drive Link](https://drive.google.com/drive/folders/1KNErZCA-WFEPURbE0Mudm3GM_Glctggv?usp=drive_link)**. *(If the link is inaccessible and you require this file, please contact the corresponding author of our paper via email.)*
     2.  Extract the `.zip` file and copy the resulting folder (e.g., `transformer_stock_prediction`) into your main Conda environments directory (e.g., `C:\Users\Admin\anaconda3\envs`, you can find the path by running `conda info --envs`). Example path after copying: `C:\Users\Admin\anaconda3\envs\transformer_stock_prediction`.
     3.  Run the following commands to register and activate the environment:
 
