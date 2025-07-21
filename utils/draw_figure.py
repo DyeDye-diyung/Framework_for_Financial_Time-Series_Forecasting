@@ -147,7 +147,7 @@ if __name__ == '__main__':
     LEGEND_SETTINGS = {
         'data': {
             'loc': 'lower right',
-            'framealpha': 0.9,
+            'framealpha': 0.5,
             'fontsize': FONT_CONFIG['legend_size']
         },
         'partition': {
@@ -192,7 +192,7 @@ if __name__ == '__main__':
     SAVE_CONFIG = {
         'dpi': 300,
         'bbox_inches': 'tight',
-        'figsize': (12, 6)
+        'figsize': (12, 4)
     }
     # ===================== End of Configuration =====================
 

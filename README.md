@@ -1,6 +1,6 @@
-# Knowledge-Driven Modular Deep Learning Framework for Financial Time-Series Forecasting
+# Enhancing stock price forecasting with a modular deep learning framework incorporating plug-and-play Transformer variants
 
-This repository contains the official source code and data for the research paper: **"Knowledge-Driven Modular Deep Learning Framework Integrating CNN, Transformer Variants and BiLSTM for Robust Financial Time-Series Forecasting"**.
+This repository contains the official source code and data for the research paper: **"Enhancing stock price forecasting with a modular deep learning framework incorporating plug-and-play Transformer variants"**.
 
 Our proposed framework, **RevIN-CNN-(Transformer Variants)-BiLSTM**, is a modular and robust deep learning architecture designed to tackle the inherent challenges of financial time series forecasting, such as high noise, non-stationarity, and complex dependencies.
 
@@ -303,7 +303,7 @@ If you find this work useful for your research, please consider citing our paper
 
 ```bibtex
 @article{your_paper_2025,
-  title={Knowledge-Driven Modular Deep Learning Framework Integrating CNN, Transformer Variants and BiLSTM for Robust Financial Time-Series Forecasting},
+  title={Enhancing stock price forecasting with a modular deep learning framework incorporating plug-and-play Transformer variants},
   author={Your Name, et al.},
   journal={Journal Name},
   year={2025},
