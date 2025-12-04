@@ -17,7 +17,9 @@ def aggregate_results(root_dir="lightning_logs"):
         ("version_9", "RevIN-CNN-iTransformer"),
         ("version_10", "CNN-Transformer-BiLSTM"),
         ("version_11", "RevIN-Transformer-BiLSTM"),
-        ("version_12", "RevIN-CNN-Transformer")
+        ("version_12", "RevIN-CNN-Transformer"),
+        ("version_13", "xLSTM"),
+        ("version_14", "Mamba"),
     ]
 
     # Convert to an OrderedDict to maintain order
@@ -35,7 +37,7 @@ def aggregate_results(root_dir="lightning_logs"):
     # Create a summary table for each test set
     for test_set, row_name in test_sets.items():
         # Initialize the summary data structure
-        metrics = ["RMSE", "MAPE", "R^2"]
+        metrics = ["RMSE", "MAPE", "R^2", "RMSRE", "RMSPE", "MARE"]
         summary_data = []
 
         # Process according to the specified model order

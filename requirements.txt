@@ -1,3 +1,4 @@
+# conda install below
 # numpy
 pandas
 # pytorch==1.8.1
@@ -12,6 +13,7 @@ einops>=0.8.0
 beartype
 hyper-connections>=0.0.14
 pandas-stubs
+shap
 
 # pip install below
 akshare

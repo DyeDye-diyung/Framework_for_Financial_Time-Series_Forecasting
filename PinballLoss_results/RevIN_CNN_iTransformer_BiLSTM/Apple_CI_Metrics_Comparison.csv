@@ -1,0 +1,3 @@
+Model,Coverage_Rate (%),Mean_Interval_Width
+RevIN_CNN_iTransformer_BiLSTM,81.82,11.7121
+iTransformer_PinballLoss,100.00,67.2908

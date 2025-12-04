@@ -109,7 +109,9 @@ def main():
         "RevIN-CNN-iTransformer": "version_9",
         "CNN-Transformer-BiLSTM": "version_10",
         "RevIN-Transformer-BiLSTM": "version_11",
-        "RevIN-CNN-Transformer": "version_12"
+        "RevIN-CNN-Transformer": "version_12",
+        "xLSTM": "version_13",
+        "Mamba": "version_14",
     }
 
     # Step 3: Load the complete ground truth data

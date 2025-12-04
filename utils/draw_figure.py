@@ -81,6 +81,17 @@ def config_parser(parser: ArgumentParser = ArgumentParser(), targets: list[str] 
         ],
         help='List of model names to be highlighted'
     )
+    parser.add_argument(
+        '--day-ahead',
+        action='store_true',
+        help='Enable the day-ahead mode and save the images to the "day-ahead images" folder'
+    )
+    parser.add_argument(
+        '--fig_title',
+        type=str,
+        default=None,
+        help='Figure title suffix'
+    )
     return parser
 
 
@@ -88,6 +99,9 @@ if __name__ == '__main__':
     # Parse command-line arguments
     parser = config_parser(targets=['Apple', 'Microsoft', 'MaoTai', 'HSBC'])  # The target list can be expanded as needed
     args = parser.parse_args()
+    
+    if args.day_ahead and not args.fig_title:
+        parser.error("--fig_title is required when --day-ahead is specified.")
 
     # Verify that the number of model names and prediction paths are consistent
     if len(args.model_names) != len(args.pred_csv_paths):
@@ -130,13 +144,14 @@ if __name__ == '__main__':
     FONT_CONFIG = {
         'family': 'Times New Roman',  # Global font
         'title_size': 16,  # Title font size
-        'label_size': 10,  # Axis label font size
-        'legend_size': 6  # Legend font size
+        'label_size': 15,  # Axis label font size
+        'legend_size': 15,  # Legend font size
+        'tick_size': 14,  # Control the font size of the ticks number/date (usually slightly smaller than the label)
     }
     GRID_STYLE = {
-        'alpha': 0.0,  # Alpha (transparency)
-        'color': 'lightgray',  # Grid line color
-        'linestyle': ':',  # Linestyle (dashed)
+        'alpha': 0.2,  # Alpha (transparency)
+        'color': 'gray',  # Grid line color
+        'linestyle': '--',  # Linestyle (dashed)
         'linewidth': 0.8  # Linewidth
     }
     COLOR_SETTINGS = {
@@ -167,7 +182,7 @@ if __name__ == '__main__':
         # 'true': '#d62728',  # Changed to high-saturation red
         'true': '#1f77b4',  # Changed to high-saturation blue
         'highlight': ['#ff7f0e', '#2ca02c'],  # Orange and green as highlight colors
-        'normal': ['#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']  # Use low-saturation/neutral colors
+        'normal': ['#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf', '#9467bd', '#c49c94']  # Use low-saturation/neutral colors
     }
     PRICE_STYLE = {
         'true': {
@@ -230,18 +245,39 @@ if __name__ == '__main__':
     # Set title and axis labels
     ax.set_xlabel('Date', fontsize=FONT_CONFIG['label_size'])
     ax.set_ylabel('Price', fontsize=FONT_CONFIG['label_size'])
+    # Apply the ticks number/date font sizes on the X-axis and Y-axis
+    ax.tick_params(axis='both', which='major', labelsize=FONT_CONFIG['tick_size'])
 
     # Apply grid style
     ax.grid(**GRID_STYLE)
 
     # Add data legend
-    data_legend = ax.legend(**LEGEND_SETTINGS['data'])
+    # data_legend = ax.legend(**LEGEND_SETTINGS['data'])
+    data_legend = ax.legend(
+        bbox_to_anchor=(1.00, 1),
+        loc='upper left',
+        framealpha=LEGEND_SETTINGS['data']['framealpha'],
+        fontsize=LEGEND_SETTINGS['data']['fontsize']
+    )
     ax.add_artist(data_legend)
 
     # Save the figure
-    plt.savefig(f'images/{args.test_target} Close Price Prediction.png', dpi=SAVE_CONFIG['dpi'],
-                bbox_inches=SAVE_CONFIG['bbox_inches'], transparent=True)
-    print(f'Saved prediction plot to "images/{args.test_target} Close Price Prediction.png"')
-    plt.savefig(f'images/{args.test_target} Close Price Prediction.svg', dpi=SAVE_CONFIG['dpi'],
-                bbox_inches=SAVE_CONFIG['bbox_inches'], transparent=True)
-    print(f'Saved prediction plot to "images/{args.test_target} Close Price Prediction.svg"')
+    if args.day_ahead:
+        save_folder = 'day-ahead images'
+        file_name_base = f'{args.test_target}_Close_Price_{args.fig_title}_Day-ahead_Prediction'
+        print(f"The Day-ahead mode is enabled and the image will be saved to the '{save_folder}' folder.")
+    else:
+        save_folder = 'images'
+        file_name_base = f'{args.test_target}_Close_Price_Prediction'
+
+    os.makedirs(save_folder, exist_ok=True)
+
+    png_save_path = os.path.join(save_folder, f'{file_name_base}.png')
+    svg_save_path = os.path.join(save_folder, f'{file_name_base}.svg')
+
+    plt.savefig(png_save_path, dpi=SAVE_CONFIG['dpi'],
+                bbox_inches=SAVE_CONFIG['bbox_inches'], transparent=True, bbox_extra_artists=(data_legend,))
+    print(f'saved prediction plot to "{png_save_path}"')
+    plt.savefig(svg_save_path, dpi=SAVE_CONFIG['dpi'],
+                bbox_inches=SAVE_CONFIG['bbox_inches'], transparent=True, bbox_extra_artists=(data_legend,))
+    print(f'saved prediction plot to "{svg_save_path}"')

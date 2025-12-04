@@ -4,7 +4,7 @@ import pandas as pd
 
 class StockDataSet(Dataset):
 
-    def __init__(self, df: pd.DataFrame, target='Apple', is_scaled=True):
+    def __init__(self, df: pd.DataFrame, target='Apple', is_scaled=True, pre_fitted_x_scaler=None, pre_fitted_y_scaler=None):
         self.df = df
         self.length, self.dim = self.df.shape
         self.is_scaled = is_scaled  # Whether to apply scaling
@@ -19,10 +19,18 @@ class StockDataSet(Dataset):
             # Scaling
             # from sklearn.preprocessing import StandardScaler
             from sklearn.preprocessing import MinMaxScaler
-            self.x_scaler = MinMaxScaler()
-            self.y_scaler = MinMaxScaler()
-            self.X = self.x_scaler.fit_transform(self.X)
-            self.Y = self.y_scaler.fit_transform(self.Y)
+            # If pre-trained scalers are provided, use them directly for the transform
+            if pre_fitted_x_scaler and pre_fitted_y_scaler:
+                self.x_scaler = pre_fitted_x_scaler
+                self.y_scaler = pre_fitted_y_scaler
+                self.X = self.x_scaler.transform(self.X)  # Note: Here it is transform, not fit_transform
+                self.Y = self.y_scaler.transform(self.Y)  # Note: Here it is transform, not fit_transform
+            # Otherwise (for example, during model training), create a new scaler and perform fit_transform
+            else:
+                self.x_scaler = MinMaxScaler()
+                self.y_scaler = MinMaxScaler()
+                self.X = self.x_scaler.fit_transform(self.X)
+                self.Y = self.y_scaler.fit_transform(self.Y)
         else:
             # Do not perform scaling
             self.x_scaler = None
