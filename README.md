@@ -109,10 +109,10 @@ Due to the project's reliance on specific GPU hardware acceleration (CUDA), the 
     # Add your envs directory to conda's configuration to ensure it's recognized
     # Replace the path below with your actual envs path
     conda config --append envs_dirs C:\Users\Admin\anaconda3\envs
-
+    
     # Verify that conda now sees the environment
     conda env list
-
+    
     # Activate the environment (the folder name is the environment name)
     conda activate transformer_stock_prediction
     ```
@@ -166,6 +166,8 @@ python -m utils.train new Apple --num-days-for-predict 96 --batch-size 32 --lear
 python -m utils.train new Apple --num-days-for-predict 96 --batch-size 32 --learning-rate 0.0001 --model_use CNN_Transformer_BiLSTM
 python -m utils.train new Apple --num-days-for-predict 96 --batch-size 32 --learning-rate 0.0001 --model_use RevIN_Transformer_BiLSTM
 python -m utils.train new Apple --num-days-for-predict 96 --batch-size 32 --learning-rate 0.0001 --model_use RevIN_CNN_Transformer
+python -m utils.train new Apple --num-days-for-predict 96 --batch-size 32 --learning-rate 0.0001 --model_use xLSTM
+python -m utils.train new Apple --num-days-for-predict 96 --batch-size 32 --learning-rate 0.0001 --model_use Mamba
 ```
 
 ### Step 3: Predict and Test
@@ -198,6 +200,8 @@ python -m utils.test lightning_logs/version_9/checkpoints/last.ckpt  --model_use
 python -m utils.test lightning_logs/version_10/checkpoints/last.ckpt  --model_use CNN_Transformer_BiLSTM --test_target Apple
 python -m utils.test lightning_logs/version_11/checkpoints/last.ckpt  --model_use RevIN_Transformer_BiLSTM --test_target Apple
 python -m utils.test lightning_logs/version_12/checkpoints/last.ckpt  --model_use RevIN_CNN_Transformer --test_target Apple
+python -m utils.test lightning_logs/version_13/checkpoints/last.ckpt  --model_use xLSTM --test_target Apple
+python -m utils.test lightning_logs/version_14/checkpoints/last.ckpt  --model_use Mamba --test_target Apple
 python -m utils.preprocess --targets Microsoft --processors technical_indicators fourier_components
 python -m utils.test lightning_logs/version_0/checkpoints/last.ckpt  --model_use RevIN_CNN_iTransformer_BiLSTM --test_target Microsoft
 python -m utils.test lightning_logs/version_1/checkpoints/last.ckpt  --model_use RevIN_CNN_Transformer_BiLSTM --test_target Microsoft
@@ -212,6 +216,8 @@ python -m utils.test lightning_logs/version_9/checkpoints/last.ckpt  --model_use
 python -m utils.test lightning_logs/version_10/checkpoints/last.ckpt  --model_use CNN_Transformer_BiLSTM --test_target Microsoft
 python -m utils.test lightning_logs/version_11/checkpoints/last.ckpt  --model_use RevIN_Transformer_BiLSTM --test_target Microsoft
 python -m utils.test lightning_logs/version_12/checkpoints/last.ckpt  --model_use RevIN_CNN_Transformer --test_target Microsoft
+python -m utils.test lightning_logs/version_13/checkpoints/last.ckpt  --model_use xLSTM --test_target Microsoft
+python -m utils.test lightning_logs/version_14/checkpoints/last.ckpt  --model_use Mamba --test_target Microsoft
 python -m utils.preprocess --targets MaoTai --processors technical_indicators fourier_components
 python -m utils.test lightning_logs/version_0/checkpoints/last.ckpt  --model_use RevIN_CNN_iTransformer_BiLSTM --test_target MaoTai
 python -m utils.test lightning_logs/version_1/checkpoints/last.ckpt  --model_use RevIN_CNN_Transformer_BiLSTM --test_target MaoTai
@@ -226,6 +232,8 @@ python -m utils.test lightning_logs/version_9/checkpoints/last.ckpt  --model_use
 python -m utils.test lightning_logs/version_10/checkpoints/last.ckpt  --model_use CNN_Transformer_BiLSTM --test_target MaoTai
 python -m utils.test lightning_logs/version_11/checkpoints/last.ckpt  --model_use RevIN_Transformer_BiLSTM --test_target MaoTai
 python -m utils.test lightning_logs/version_12/checkpoints/last.ckpt  --model_use RevIN_CNN_Transformer --test_target MaoTai
+python -m utils.test lightning_logs/version_13/checkpoints/last.ckpt  --model_use xLSTM --test_target MaoTai
+python -m utils.test lightning_logs/version_14/checkpoints/last.ckpt  --model_use Mamba --test_target MaoTai
 python -m utils.preprocess --targets HSBC --processors technical_indicators fourier_components
 python -m utils.test lightning_logs/version_0/checkpoints/last.ckpt  --model_use RevIN_CNN_iTransformer_BiLSTM --test_target HSBC
 python -m utils.test lightning_logs/version_1/checkpoints/last.ckpt  --model_use RevIN_CNN_Transformer_BiLSTM --test_target HSBC
@@ -240,60 +248,96 @@ python -m utils.test lightning_logs/version_9/checkpoints/last.ckpt  --model_use
 python -m utils.test lightning_logs/version_10/checkpoints/last.ckpt  --model_use CNN_Transformer_BiLSTM --test_target HSBC
 python -m utils.test lightning_logs/version_11/checkpoints/last.ckpt  --model_use RevIN_Transformer_BiLSTM --test_target HSBC
 python -m utils.test lightning_logs/version_12/checkpoints/last.ckpt  --model_use RevIN_CNN_Transformer --test_target HSBC
-
+python -m utils.test lightning_logs/version_13/checkpoints/last.ckpt  --model_use xLSTM --test_target HSBC
+python -m utils.test lightning_logs/version_14/checkpoints/last.ckpt  --model_use Mamba --test_target HSBC
 ```
 
 ### Step 4: Aggregate Results and Statistical Tests
 
 Once all models have been evaluated, you can aggregate the results and perform statistical tests.
 
-1.  **Aggregate Evaluation Metrics:**
-    The `evaluate.py` script collects all individual `_Evaluation.csv` files and creates summary tables.
+1. **Aggregate Evaluation Metrics:**
+   The `evaluate.py` script collects all individual `_Evaluation.csv` files and creates summary tables.
 
-    ```bash
-    python -m utils.evaluate
-    ```
+   ```bash
+   python -m utils.evaluate
+   ```
 
-    This will generate summary files like `Apple_Summary.csv` in the `/evaluate_results` folder.
+   This will generate summary files like `Apple_Summary.csv` in the `/evaluate_results` folder.
 
-2.  **Perform Diebold-Mariano Test:**
-    The `dm_test.py` script performs statistical tests to verify if the performance improvement of our model is significant.
+2. **Perform Diebold-Mariano Test:**
+   The `dm_test.py` script performs statistical tests to verify if the performance improvement of our model is significant.
 
-    **Example: Comparing our best model against baselines on the Apple test set:**
+   **Example: Comparing our best model against baselines on the Apple test set:**
 
-    ```bash
-    python -m utils.dm_test --test_set Apple --reference_model "RevIN-CNN-iTransformer-BiLSTM" --comparison_models "RevIN-CNN-Transformer-BiLSTM" "CNN-BiLSTM-Attention" "SCINet" "GAN" "Transformer" "iTransformer"  --crit MSE --subset Test
-    ```
+   ```bash
+   python -m utils.dm_test --test_set Apple --reference_model "RevIN-CNN-iTransformer-BiLSTM" --comparison_models "RevIN-CNN-Transformer-BiLSTM" "CNN-BiLSTM-Attention" "SCINet" "GAN" "Transformer" "iTransformer" "xLSTM" "Mamba" --crit MSE --subset Test
+   ```
 
-    The results will be printed to the console and saved to the `/DM_Test_results` folder.
+   The results will be printed to the console and saved to the `/DM_Test_results` folder.
 
-    **To perform all Diebold-Mariano Tests used in the paper, these commands are necessary:**
+   **To perform all Diebold-Mariano Tests used in the paper, these commands are necessary:**
 
-    ```bash
-    python -m utils.dm_test --test_set Apple --reference_model "RevIN-CNN-iTransformer-BiLSTM" --comparison_models "RevIN-CNN-Transformer-BiLSTM" "CNN-BiLSTM-Attention" "SCINet" "GAN" "Transformer" "iTransformer"  --crit MSE --subset Test
-    python -m utils.dm_test --test_set Microsoft --reference_model "RevIN-CNN-iTransformer-BiLSTM" --comparison_models "RevIN-CNN-Transformer-BiLSTM" "CNN-BiLSTM-Attention" "SCINet" "GAN" "Transformer" "iTransformer"  --crit MSE --subset All
-    python -m utils.dm_test --test_set MaoTai --reference_model "RevIN-CNN-iTransformer-BiLSTM" --comparison_models "RevIN-CNN-Transformer-BiLSTM" "CNN-BiLSTM-Attention" "SCINet" "GAN" "Transformer" "iTransformer"  --crit MSE --subset All
-    python -m utils.dm_test --test_set HSBC --reference_model "RevIN-CNN-iTransformer-BiLSTM" --comparison_models "RevIN-CNN-Transformer-BiLSTM" "CNN-BiLSTM-Attention" "SCINet" "GAN" "Transformer" "iTransformer"  --crit MSE --subset All
-    ```
-    
-3.  **(Optional) Generate Comparison Plots 🎨:**
-    The `draw_figure.py` script is provided to visualize and compare the predictions of multiple models against the true values on a single plot. This is useful for creating the final figures for the paper.
+   ```bash
+   python -m utils.dm_test --test_set Apple --reference_model "RevIN-CNN-iTransformer-BiLSTM" --comparison_models "RevIN-CNN-Transformer-BiLSTM" "CNN-BiLSTM-Attention" "SCINet" "GAN" "Transformer" "iTransformer" "xLSTM" "Mamba" --crit MSE --subset Test
+   python -m utils.dm_test --test_set Microsoft --reference_model "RevIN-CNN-iTransformer-BiLSTM" --comparison_models "RevIN-CNN-Transformer-BiLSTM" "CNN-BiLSTM-Attention" "SCINet" "GAN" "Transformer" "iTransformer" "xLSTM" "Mamba" --crit MSE --subset All
+   python -m utils.dm_test --test_set MaoTai --reference_model "RevIN-CNN-iTransformer-BiLSTM" --comparison_models "RevIN-CNN-Transformer-BiLSTM" "CNN-BiLSTM-Attention" "SCINet" "GAN" "Transformer" "iTransformer" "xLSTM" "Mamba" --crit MSE --subset All
+   python -m utils.dm_test --test_set HSBC --reference_model "RevIN-CNN-iTransformer-BiLSTM" --comparison_models "RevIN-CNN-Transformer-BiLSTM" "CNN-BiLSTM-Attention" "SCINet" "GAN" "Transformer" "iTransformer" "xLSTM" "Mamba" --crit MSE --subset All
+   ```
 
-    **Example: Generating the comparison plot for the Apple test set within a specific date range:**
-    ```bash
-    python -m utils.draw_figure --test_target Apple --true_csv_path data/Apple.csv \
-      --pred_csv_paths lightning_logs/version_0/test_prediction/Apple_test_pred.csv lightning_logs/version_1/test_prediction/Apple_test_pred.csv lightning_logs/version_2/test_prediction/Apple_test_pred.csv lightning_logs/version_3/test_prediction/Apple_test_pred.csv lightning_logs/version_4/test_prediction/Apple_test_pred.csv lightning_logs/version_5/test_prediction/Apple_test_pred.csv lightning_logs/version_6/test_prediction/Apple_test_pred.csv \
-      --model_names RevIN_CNN_iTransformer_BiLSTM RevIN_CNN_Transformer_BiLSTM CNN_BiLSTM_Attention SCINet GRU_GAN Transformer iTransformer \
-      --date_range 2024-01-17 2025-01-01
-    ```
+3. **Generate Comparison Plots 🎨:**
+   The `draw_figure.py` script is provided to visualize and compare the predictions of multiple models against the true values on a single plot. This is useful for creating the final figures for the paper.
 
-    **To generate all four comparison plots used in the paper, you can use the provided commands:**
-    ```bash
-    python -m utils.draw_figure --test_target Apple --true_csv_path data/Apple.csv --pred_csv_paths lightning_logs/version_0/test_prediction/Apple_test_pred.csv lightning_logs/version_1/test_prediction/Apple_test_pred.csv lightning_logs/version_2/test_prediction/Apple_test_pred.csv lightning_logs/version_3/test_prediction/Apple_test_pred.csv lightning_logs/version_4/test_prediction/Apple_test_pred.csv lightning_logs/version_5/test_prediction/Apple_test_pred.csv lightning_logs/version_6/test_prediction/Apple_test_pred.csv --model_names RevIN_CNN_iTransformer_BiLSTM RevIN_CNN_Transformer_BiLSTM CNN_BiLSTM_Attention SCINet GRU_GAN Transformer iTransformer --date_range 2024-01-17 2025-01-01
-    python -m utils.draw_figure --test_target Microsoft --true_csv_path data/Microsoft.csv --pred_csv_paths lightning_logs/version_0/test_prediction/Microsoft_pred.csv lightning_logs/version_1/test_prediction/Microsoft_pred.csv lightning_logs/version_2/test_prediction/Microsoft_pred.csv lightning_logs/version_3/test_prediction/Microsoft_pred.csv lightning_logs/version_4/test_prediction/Microsoft_pred.csv lightning_logs/version_5/test_prediction/Microsoft_pred.csv lightning_logs/version_6/test_prediction/Microsoft_pred.csv --model_names RevIN_CNN_iTransformer_BiLSTM RevIN_CNN_Transformer_BiLSTM CNN_BiLSTM_Attention SCINet GRU_GAN Transformer iTransformer
-    python -m utils.draw_figure --test_target MaoTai --true_csv_path data/MaoTai.csv --pred_csv_paths lightning_logs/version_0/test_prediction/MaoTai_pred.csv lightning_logs/version_1/test_prediction/MaoTai_pred.csv lightning_logs/version_2/test_prediction/MaoTai_pred.csv lightning_logs/version_3/test_prediction/MaoTai_pred.csv lightning_logs/version_4/test_prediction/MaoTai_pred.csv lightning_logs/version_5/test_prediction/MaoTai_pred.csv lightning_logs/version_6/test_prediction/MaoTai_pred.csv --model_names RevIN_CNN_iTransformer_BiLSTM RevIN_CNN_Transformer_BiLSTM CNN_BiLSTM_Attention SCINet GRU_GAN Transformer iTransformer
-    python -m utils.draw_figure --test_target HSBC --true_csv_path data/HSBC.csv --pred_csv_paths lightning_logs/version_0/test_prediction/HSBC_pred.csv lightning_logs/version_1/test_prediction/HSBC_pred.csv lightning_logs/version_2/test_prediction/HSBC_pred.csv lightning_logs/version_3/test_prediction/HSBC_pred.csv lightning_logs/version_4/test_prediction/HSBC_pred.csv lightning_logs/version_5/test_prediction/HSBC_pred.csv lightning_logs/version_6/test_prediction/HSBC_pred.csv --model_names RevIN_CNN_iTransformer_BiLSTM RevIN_CNN_Transformer_BiLSTM CNN_BiLSTM_Attention SCINet GRU_GAN Transformer iTransformer
-    ```
+   **Example: Generating the comparison plot for the Apple test set within a specific date range:**
+   ```bash
+   python -m utils.draw_figure --test_target Apple --true_csv_path data/Apple.csv \
+     --pred_csv_paths lightning_logs/version_0/test_prediction/Apple_test_pred.csv lightning_logs/version_1/test_prediction/Apple_test_pred.csv lightning_logs/version_2/test_prediction/Apple_test_pred.csv lightning_logs/version_3/test_prediction/Apple_test_pred.csv lightning_logs/version_4/test_prediction/Apple_test_pred.csv lightning_logs/version_5/test_prediction/Apple_test_pred.csv     lightning_logs/version_6/test_prediction/Apple_test_pred.csv  lightning_logs/version_13/test_prediction/Apple_test_pred.csv lightning_logs/version_14/test_prediction/Apple_test_pred.csv \
+     --model_names RevIN_CNN_iTransformer_BiLSTM RevIN_CNN_Transformer_BiLSTM CNN_BiLSTM_Attention SCINet GRU_GAN Transformer iTransformer xLSTM Mamba \
+     --date_range 2024-01-17 2025-01-01
+   ```
+
+   **To generate all four comparison plots used in the paper, you can use the provided commands:**
+   ```bash
+   python -m utils.draw_figure --test_target Apple --true_csv_path data/Apple.csv --pred_csv_paths lightning_logs/version_0/test_prediction/Apple_test_pred.csv lightning_logs/version_1/test_prediction/Apple_test_pred.csv lightning_logs/version_2/test_prediction/Apple_test_pred.csv lightning_logs/version_3/test_prediction/Apple_test_pred.csv lightning_logs/version_4/test_prediction/Apple_test_pred.csv lightning_logs/version_5/test_prediction/Apple_test_pred.csv lightning_logs/version_6/test_prediction/Apple_test_pred.csv lightning_logs/version_13/test_prediction/Apple_test_pred.csv lightning_logs/version_14/test_prediction/Apple_test_pred.csv --model_names RevIN_CNN_iTransformer_BiLSTM RevIN_CNN_Transformer_BiLSTM CNN_BiLSTM_Attention SCINet GRU_GAN Transformer iTransformer xLSTM Mamba --date_range 2024-01-17 2025-01-01
+   python -m utils.draw_figure --test_target Microsoft --true_csv_path data/Microsoft.csv --pred_csv_paths lightning_logs/version_0/test_prediction/Microsoft_pred.csv lightning_logs/version_1/test_prediction/Microsoft_pred.csv lightning_logs/version_2/test_prediction/Microsoft_pred.csv lightning_logs/version_3/test_prediction/Microsoft_pred.csv lightning_logs/version_4/test_prediction/Microsoft_pred.csv lightning_logs/version_5/test_prediction/Microsoft_pred.csv lightning_logs/version_6/test_prediction/Microsoft_pred.csv lightning_logs/version_13/test_prediction/Microsoft_test_pred.csv lightning_logs/version_14/test_prediction/Microsoft_test_pred.csv --model_names RevIN_CNN_iTransformer_BiLSTM RevIN_CNN_Transformer_BiLSTM CNN_BiLSTM_Attention SCINet GRU_GAN Transformer iTransformer xLSTM Mamba
+   python -m utils.draw_figure --test_target MaoTai --true_csv_path data/MaoTai.csv --pred_csv_paths lightning_logs/version_0/test_prediction/MaoTai_pred.csv lightning_logs/version_1/test_prediction/MaoTai_pred.csv lightning_logs/version_2/test_prediction/MaoTai_pred.csv lightning_logs/version_3/test_prediction/MaoTai_pred.csv lightning_logs/version_4/test_prediction/MaoTai_pred.csv lightning_logs/version_5/test_prediction/MaoTai_pred.csv lightning_logs/version_6/test_prediction/MaoTai_pred.csv lightning_logs/version_13/test_prediction/MaoTai_test_pred.csv lightning_logs/version_14/test_prediction/MaoTai_test_pred.csv --model_names RevIN_CNN_iTransformer_BiLSTM RevIN_CNN_Transformer_BiLSTM CNN_BiLSTM_Attention SCINet GRU_GAN Transformer iTransformer xLSTM Mamba
+   python -m utils.draw_figure --test_target HSBC --true_csv_path data/HSBC.csv --pred_csv_paths lightning_logs/version_0/test_prediction/HSBC_pred.csv lightning_logs/version_1/test_prediction/HSBC_pred.csv lightning_logs/version_2/test_prediction/HSBC_pred.csv lightning_logs/version_3/test_prediction/HSBC_pred.csv lightning_logs/version_4/test_prediction/HSBC_pred.csv lightning_logs/version_5/test_prediction/HSBC_pred.csv lightning_logs/version_6/test_prediction/HSBC_pred.csv lightning_logs/version_13/test_prediction/HSBC_test_pred.csv lightning_logs/version_14/test_prediction/HSBC_test_pred.csv --model_names RevIN_CNN_iTransformer_BiLSTM RevIN_CNN_Transformer_BiLSTM CNN_BiLSTM_Attention SCINet GRU_GAN Transformer iTransformer xLSTM Mamba
+   ```
+
+   **To generate loss comparison plots used in the paper, you can use the provided commands:**
+   ```bash
+   python -m utils.plot_loss_curves --csv-paths lightning_logs/version_0/metrics.csv lightning_logs/version_1/metrics.csv lightning_logs/version_5/metrics.csv lightning_logs/version_6/metrics.csv --model-names RevIN-CNN-iTransformer-BiLSTM RevIN-CNN-Transformer-BiLSTM Transformer iTransformer --output-folder loss_curve_results/ --output-basename loss_comparison --y-log
+   ```
+
+4. **Feature Importance and Model Interpretability with SHAP:**
+
+   To understand *why* the model makes specific predictions, we provide a SHAP (SHapley Additive exPlanations) analysis script.
+
+   ```bash
+   python -m utils.preprocess --targets Apple --processors technical_indicators fourier_components
+   python -m utils.shap_analysis --model-type RevIN_CNN_iTransformer_BiLSTM --ckpt-path lightning_logs/version_0/checkpoints/last.ckpt --data-path data/processed_dataset.csv --output-folder shap_analysis/RevIN_CNN_iTransformer_BiLSTM/ --num-background-samples 200 --num-test-samples 500 --max-display 10
+   python -m utils.shap_analysis --model-type iTransformer --ckpt-path lightning_logs/version_6/checkpoints/last.ckpt --data-path data/processed_dataset.csv --output-folder shap_analysis/iTransformer/ --num-background-samples 200 --num-test-samples 500 --max-display 10
+   ```
+
+5. **Uncertainty Quantification (Prediction Interval Evaluation):**
+
+   Beyond point forecasting, our framework supports **Probabilistic Forecasting** using Pinball Loss to generate 95% confidence intervals.
+
+   ```bash
+   python -m utils.PinballLoss_test_and_draw_figure --median_ckpt_paths lightning_logs/version_17/checkpoints/last.ckpt lightning_logs/version_20/checkpoints/last.ckpt --lower_ckpt_paths lightning_logs/version_15/checkpoints/last.ckpt lightning_logs/version_18/checkpoints/last.ckpt --upper_ckpt_paths lightning_logs/version_16/checkpoints/last.ckpt lightning_logs/version_19/checkpoints/last.ckpt --model_classes RevIN_CNN_iTransformer_BiLSTM_PinballLoss iTransformer_PinballLoss --model_names RevIN_CNN_iTransformer_BiLSTM iTransformer_PinballLoss --test_target Apple --output_dir PinballLoss_results/RevIN_CNN_iTransformer_BiLSTM --data_csv_path data/processed_dataset.csv --date_range 2024-01-17 2025-01-01
+   ```
+
+6. **Day-Ahead Rolling Forecast 🔄:**
+
+   To simulate a real-world trading scenario, we perform a rolling forecast on the latest 360 trading days without retraining (Zero-shot generalization):
+
+   ```bash
+   python -m utils.preprocess --targets Apple --processors technical_indicators fourier_components --day-ahead 360 --input-horizon 96
+   python -m utils.test lightning_logs/version_0/checkpoints/last.ckpt  --model_use RevIN_CNN_iTransformer_BiLSTM --test_target Apple --mode day-ahead
+   python -m utils.test lightning_logs/version_6/checkpoints/last.ckpt  --model_use iTransformer --test_target Apple --mode day-ahead
+   python -m utils.draw_figure --test_target Apple --true_csv_path data/Apple.csv --pred_csv_paths lightning_logs/version_0/day-ahead_prediction/Apple_pred.csv lightning_logs/version_6/day-ahead_prediction/Apple_pred.csv --model_names RevIN_CNN_iTransformer_BiLSTM iTransformer --date_range 2024-05-14 2025-10-20 --fig_title iTransformer --day-ahead
+   
+   ```
 
 ---
 
@@ -312,20 +356,10 @@ If you find this work useful for your research, please consider citing our paper
 }
 ```
 
-*(Note: Please replace the BibTeX entry with the final citation information once it is published.)*
+*(Note: We will replace the BibTeX entry with the final citation information once it is published.)*
 
 -----
 
 ## 📄 License
 
 This project is licensed under the Apache-2.0 License. See the `LICENSE` file for details.
-
------
-
-## 🙏 Acknowledgements
-
-  - We would like to thank...
-  - This research was supported by...
-
-<!-- end list -->
-
