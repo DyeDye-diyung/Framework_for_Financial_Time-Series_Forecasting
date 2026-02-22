@@ -346,17 +346,21 @@ Once all models have been evaluated, you can aggregate the results and perform s
 If you find this work useful for your research, please consider citing our paper:
 
 ```bibtex
-@article{your_paper_2025,
-  title={Enhancing stock price forecasting with a modular deep learning framework incorporating plug-and-play Transformer variants},
-  author={Your Name, et al.},
-  journal={Journal Name},
-  year={2025},
-  volume={xx},
-  pages={xx--xx}
+@article{HUANG2026131572,
+title = {Enhancing stock price forecasting with a modular deep learning framework incorporating plug-and-play Transformer variants},
+journal = {Expert Systems with Applications},
+pages = {131572},
+year = {2026},
+issn = {0957-4174},
+doi = {https://doi.org/10.1016/j.eswa.2026.131572},
+url = {https://www.sciencedirect.com/science/article/pii/S0957417426004859},
+author = {Yuming Huang and Chenxue Yang},
+keywords = {Stock price forecasting, Modular deep learning, Plug-and-play Transformer variants, Reversible Instance Normalization (RevIN), Non-stationary data, Cross-market generalization},
+abstract = {Stock price forecasting remains challenging due to highly nonstationary, noisy financial time-series punctuated by rare extreme events with persistent impacts. Although recent deep-learning models, especially CNNs, RNNs, and Transformers, have improved predictive accuracy, they still face significant limitations regarding distributional drift, tail-risk robustness, and computational demands for long sequences. To bridge these gaps, we propose a modular, knowledge-driven deep learning framework integrating Reversible Instance Normalization (RevIN), Convolutional Neural Networks (CNN), plug-and-play Transformer variants, and Bidirectional LSTM (BiLSTM). RevIN acts as an expert-driven decision-support module, dynamically normalizing data to mitigate regime shifts while maintaining outputs in economically meaningful scales. CNN captures local temporal micro-patterns, Transformer variants (standard Transformer, iTransformer, etc.) handle global temporal and cross-variable dependencies, and BiLSTM fuses forward–backward temporal dynamics. The fully modular, plug-and-play architecture enables effortless incorporation of emerging Transformer variants without retraining existing components, ensuring long-term adaptability and scalability. Empirical evaluations on four cross-market datasets (NASDAQ-AAPL, NASDAQ-MSFT, SSE-600519, and HKEX-00005) confirm that our framework significantly lowers RMSE and MAPE by up to 50% and 54%, respectively, compared with five strong baselines. These performance gains are achieved with only a moderate (about 22%) increase in GPU training time and comparable inference latency to lightweight models. Cross-market tests further demonstrate robust generalization across distinct market regimes and currencies, significantly outperforming baseline models even without retraining. Ablation studies validate the complementary contribution of each module, underscoring the effectiveness of integrating expert-driven normalization and modular deep-learning components for robust financial decision-support systems. The code and data used in this study are available at: https://github.com/DyeDye-diyung/Framework_for_Financial_Time-Series_Forecasting.}
 }
 ```
 
-*(Note: We will replace the BibTeX entry with the final citation information once it is published.)*
+*(Note: We will replace the BibTeX entry with the final citation information once it is final published.)*
 
 -----
 
