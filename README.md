@@ -102,7 +102,7 @@ Due to the project's reliance on specific GPU hardware acceleration (CUDA), the 
     This method involves downloading a complete, pre-built environment folder. It is faster but may be less portable across different operating systems.
 
     1.  Download the compressed environment folder from: **[Google Drive Link](https://drive.google.com/drive/folders/1KNErZCA-WFEPURbE0Mudm3GM_Glctggv?usp=drive_link)**. *(If the link is inaccessible and you require this file, please contact the corresponding author of our paper via email.)*
-    2.  Extract the `.zip` file and copy the resulting folder (e.g., `transformer_stock_prediction`) into your main Conda environments directory (e.g., `C:\Users\Admin\anaconda3\envs`, you can find the path by running `conda info --envs`). Example path after copying: `C:\Users\Admin\anaconda3\envs\transformer_stock_prediction`.
+    2.  Extract the `.7z` file and copy the resulting folder (e.g., `transformer_stock_prediction`) into your main Conda environments directory (e.g., `C:\Users\Admin\anaconda3\envs`, you can find the path by running `conda info --envs`). Example path after copying: `C:\Users\Admin\anaconda3\envs\transformer_stock_prediction`.
     3.  Run the following commands to register and activate the environment:
 
     ```bash
